@@ -13,21 +13,21 @@ BaselineOfSeamless >> baseline: spec [
 		spec 
 			baseline: 'Basys' with: [
 				spec
-					repository: 'github://pharo-ide/Basys:v2.0.1';
+					repository: 'github://oliveiraallex/Basys:dev13';
 					loads: 'Core' ];
 			project: 'BasysTests' copyFrom: 'Basys' with: [
 				spec loads: 'Tests'];
 			"------------"				
 			baseline: 'ObjectStatistics' with: [
 				spec
-					repository: 'github://pharo-ide/ObjectStatistics:v2.0.1';
+					repository: 'github://oliveiraallex/ObjectStatistics:dev13';
 					loads: 'Core' ];
 			project: 'ObjectStatisticsTests' copyFrom: 'ObjectStatistics' with: [
 				spec loads: 'default' ];				
 			"------------"								
 			baseline: 'Ghost' with: [
 				spec
-					repository: 'github://pharo-ide/Ghost:v7.0.1';
+					repository: 'github://oliveiraallex/Ghost:dev13-1';
 					loads: 'ObjectGhost' ];
 			project: 'GhostTests' copyFrom: 'Ghost' with: [
 				spec loads: 'default'];
@@ -47,7 +47,7 @@ BaselineOfSeamless >> baseline: spec [
 				spec loads: 'Tests'];
 			"------------"						
 			baseline: 'Mocketry' with: [
-				spec repository: 'github://dionisiydk/Mocketry:v7.0.3' ].
+				spec repository: 'github://oliveiraallex/Mocketry:dev13' ].
 							
 		spec 
 			package: 'Seamless' with: [
