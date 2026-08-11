@@ -41,7 +41,7 @@ BaselineOfSeamless >> baseline: spec [
 			"------------"				
 			baseline: 'TostSerializer' with: [
 				spec
-					repository: 'github://pharo-ide/TostSerializer:v2.0.1';
+					repository: 'github://oliveiraallex/TostSerializer:dev13';
 					loads: 'Core'];
 			project: 'TostSerializerTests' copyFrom: 'TostSerializer' with: [
 				spec loads: 'Tests'];
