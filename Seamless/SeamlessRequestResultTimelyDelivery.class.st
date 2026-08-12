@@ -44,7 +44,7 @@ SeamlessRequestResultTimelyDelivery >> waitResult [
 	
 	[DateAndTime now - startTime < maxTime 
 		and: [ requestResult isNil and: [ senderPeer isConnected ]] ]
-			whileTrue: [ synchronizationSemaphore wait: 100 milliSeconds].
+			whileTrue: [ synchronizationSemaphore waitTimeoutMilliseconds: 100 ].
 		
 	requestResult ifNil: [ 
 		DateAndTime now - startTime >= maxTime 
