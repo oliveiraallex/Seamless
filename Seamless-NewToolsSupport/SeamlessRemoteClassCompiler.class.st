@@ -1,10 +1,11 @@
 Class {
-	#name : #SeamlessRemoteClassCompiler,
-	#superclass : #OpalCompiler,
-	#category : #'Seamless-NewToolsSupport'
+	#name : 'SeamlessRemoteClassCompiler',
+	#superclass : 'OpalCompiler',
+	#category : 'Seamless-NewToolsSupport',
+	#package : 'Seamless-NewToolsSupport'
 }
 
-{ #category : #evaluation }
+{ #category : 'evaluation' }
 SeamlessRemoteClassCompiler >> evaluate [
 	"Compiles the sourceStream into a parse tree, then generates code into
 	 a method. If aContext is not nil, the text can refer to temporaries in that
@@ -13,26 +14,31 @@ SeamlessRemoteClassCompiler >> evaluate [
 	 compiled method is invoked from here via withArgs:executeMethod:, hence
 	 the system no longer creates Doit method litter on errors."
 
-	| value |
-	self noPattern: true.
-	self getSourceFromRequestorSelection.
-	
-	self class: (context 
-				ifNil: [ receiver remoteClass ]
-				ifNotNil: [ context compiledCode methodClass ]).
-	
+	| value doItContext |
+	self isScripting: true.
+	doItContext := self requestor doItContext.
+
+	self class: (doItContext
+			 ifNil: [ self receiver remoteClass ]
+			 ifNotNil: [ doItContext compiledCode methodClass ]).
+
 	compilationContext productionEnvironment: self class environment.
-	value := [ receiver withArgs: (context ifNil: [ #() ] ifNotNil: [ {context} ]) executeMethod: self compileDoit]
-		on: SyntaxErrorNotification 
-		do: [ :exception | 
-			self compilationContext requestor
-                ifNotNil: [
-						self compilationContext requestor 
-							notify: exception errorMessage , ' ->'
-							at: exception location
-							in: exception errorCode.
-                    self compilationContext failBlock value ]
-                ifNil: [ exception pass ]].
-	self logDoIt.
+	value := [
+		         self receiver
+			         withArgs:
+			         (doItContext ifNil: [ #(  ) ] ifNotNil: [ { doItContext } ])
+			         executeMethod: self compile ]
+		         on: OCSyntaxErrorNotice
+		         do: [ :exception |
+			         self requestor
+				         ifNotNil: [
+					         self requestor
+						         notify: exception errorMessage , ' ->'
+						         at: exception location
+						         in: exception errorCode.
+					         self failBlock value ]
+			         ifNil: [ exception pass ] ].
+	self logged == true ifTrue: [
+		self semanticScope announceDoItEvaluation: source by: self class codeSupportAnnouncer ].
 	^ value
 ]
