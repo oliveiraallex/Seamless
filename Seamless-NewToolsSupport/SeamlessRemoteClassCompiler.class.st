@@ -18,10 +18,6 @@ SeamlessRemoteClassCompiler >> evaluate [
 	self isScripting: true.
 	doItContext := self requestor doItContext.
 
-	self class: (doItContext
-			 ifNil: [ self receiver remoteClass ]
-			 ifNotNil: [ doItContext compiledCode methodClass ]).
-
 	compilationContext productionEnvironment: self class environment.
 	value := [
 		         self receiver
